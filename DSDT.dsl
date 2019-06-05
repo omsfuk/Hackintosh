@@ -40,6 +40,8 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
      * because the disassembler had to guess at the number of arguments
      * required for each:
      */
+    External (\_SB.PCI0.PEG0.PEGP._PS3, MethodObj)
+    
     External (_PR_.CFGD, FieldUnitObj)
     External (_PR_.CPU0._PPC, IntObj)
     External (_PR_.CPU0._PSS, PkgObj)
@@ -11966,6 +11968,7 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
 
     Method (_WAK, 1, Serialized)  // _WAK: Wake
     {
+        PINI ()
         P8XH (One, 0xAB)
         WAK (Arg0)
         ADBG ("_WAK")
@@ -12365,6 +12368,7 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
 
         Method (_INI, 0, NotSerialized)  // _INI: Initialize
         {
+            PINI()
             Store (0x07D0, OSYS)
             If (CondRefOf (\_OSI, Local0))
             {
@@ -12419,6 +12423,8 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
             }
 
             PINI ()
+            External (\_SB.PCI0.PEG0.PEGP._OFF, MethodObj)
+            \_SB.PCI0.PEG0.PEGP._OFF()
         }
 
         Method (MCTH, 2, NotSerialized)
@@ -16836,6 +16842,13 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
             Name (XXF4, Zero)
             Method (_REG, 2, NotSerialized)  // _REG: Region Availability
             {
+                If (LAnd(LEqual(Arg0,3), LEqual(Arg1,1)))
+                {
+	                If (\_SB.PCI0.LPCB.EC.ECOK)
+	                {
+		                Store (Zero, \_SB.PCI0.LPCB.EC.GPUT)
+	                }
+                }
                 If (LAnd (LEqual (Arg0, 0x03), LEqual (Arg1, One)))
                 {
                     If (And (OEMF, One))
@@ -18028,6 +18041,7 @@ DefinitionBlock ("", "DSDT", 2, "HASEE ", "PARADISE", 0x00000034)
 
     Method (PINI, 0, NotSerialized)
     {
+        \_SB.PCI0.PEG0.PEGP._PS3 ()
     }
 }
 

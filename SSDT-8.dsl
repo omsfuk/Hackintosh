@@ -667,10 +667,10 @@ DefinitionBlock ("", "SSDT", 1, "HASEE ", "PARADISE", 0x00001000)
                 Sleep (One)
             }
 
-            If (\_SB.PCI0.LPCB.EC.ECOK)
-            {
-                Store (Zero, \_SB.PCI0.LPCB.EC.GPUT)
-            }
+            // If (\_SB.PCI0.LPCB.EC.ECOK)
+            // {
+            //     Store (Zero, \_SB.PCI0.LPCB.EC.GPUT)
+            // }
 
             Sleep (0x64)
             Store (Zero, GP50)
